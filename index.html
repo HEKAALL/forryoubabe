@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Little World for Feyya ♡</title>
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --blue: #8bcaff;
+    --light: #d9edff;
+    --navy: #071b39;
+}
+
+body {
+    font-family: 'DM Sans', sans-serif;
+    color: white;
+    background: linear-gradient(145deg, #06152e, #102e59, #173f70);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+button {
+    font-family: inherit;
+    cursor: pointer;
+}
+
+#stars {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.star {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: white;
+    border-radius: 50%;
+    opacity: .6;
+    animation: twinkle 3s infinite alternate;
+}
+
+@keyframes twinkle {
+    to {
+        opacity: .15;
+        transform: scale(.5);
+    }
+}
+
+.glow {
+    position: fixed;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: #4caaff;
+    filter: blur(130px);
+    opacity: .16;
+    pointer-events: none;
+}
+
+.g1 {
+    top: 5%;
+    left: -100px;
+}
+
+.g2 {
+    right: -100px;
+    bottom: 5%;
+    background: #a9caff;
+}
+
+main {
+    position: relative;
+    z-index: 1;
+}
+
+.page {
+    display: none;
+    min-height: 100vh;
+    padding: 75px 20px 115px;
+    align-items: center;
+    flex-direction: column;
+    animation: appear .7s ease;
+}
+
+.page.active {
+    display: flex;
+}
+
+@keyframes appear {
+    from {
+        opacity: 0;
+        transform: translateY(18px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    font-size: 11px;
+    color: #a9d7ff;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+h1, h2 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 500;
+}
+
+h1 {
+    font-size: clamp(36px, 7vw, 65px);
+    text-align: center;
+}
+
+h2 {
+    font-size: clamp(30px, 5vw, 43px);
+    text-align: center;
+}
+
+.subtitle {
+    color: #c5dcf4;
+    text-align: center;
+    line-height: 1.8;
+    max-width: 520px;
+    margin: 15px auto 30px;
+    font-size: 14px;
+}
+
+.btn {
+    border: 1px solid #a6d5ff;
+    background: #a6d5ff;
+    color: #092345;
+    padding: 13px 24px;
+    border-radius: 30px;
+    font-weight: 700;
+    transition: .3s;
+    box-shadow: 0 5px 25px #6cbaff35;
+}
+
+.btn:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px #6cbaff65;
+}
+
+.page-count {
+    position: fixed;
+    top: 20px;
+    right: 25px;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: #b7dfff;
+    z-index: 5;
+}
+
+/* =================================
+   MINIMAL GLASS NAVIGATION
+================================= */
+
+.timeline-nav {
+    position: fixed;
+    bottom: 22px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 15;
+
+    width: min(620px, calc(100% - 35px));
+    padding: 9px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 5px;
+
+    background: rgba(12, 35, 68, .78);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+
+    border: 1px solid rgba(180, 215, 255, .2);
+    border-radius: 18px;
+
+    box-shadow: 0 12px 40px rgba(0, 0, 0, .25);
+}
+
+.timeline-track,
+.timeline-progress {
+    display: none;
+}
+
+.timeline-item {
+    flex: 1;
+    width: auto;
+    min-width: 0;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 7px;
+
+    padding: 12px 8px;
+
+    border: none;
+    border-radius: 12px;
+
+    background: transparent;
+    color: #91accb;
+
+    transition: all .3s ease;
+}
+
+.timeline-icon {
+    width: auto;
+    height: auto;
+
+    border: none;
+    border-radius: 0;
+
+    background: transparent;
+    color: inherit;
+
+    font-size: 15px;
+    transition: .3s;
+}
+
+.timeline-label {
+    font-size: 11px;
+    letter-spacing: .3px;
+    white-space: nowrap;
+}
+
+.timeline-item.active {
+    background: #a6d5ff;
+    color: #092345;
+    box-shadow: 0 4px 18px #8bcaff35;
+}
+
+.timeline-item.active .timeline-icon {
+    background: transparent;
+    color: #092345;
+    border: none;
+    box-shadow: none;
+    transform: none;
+}
+
+.timeline-item.active .timeline-label {
+    color: #092345;
+    font-weight: 700;
+}
+
+.timeline-item.completed {
+    color: #c0ddf8;
+}
+
+.timeline-item.completed .timeline-icon {
+    background: transparent;
+    color: #c0ddf8;
+    border: none;
+}
+
+.timeline-item:hover {
+    background: rgba(166, 213, 255, .13);
+}
+
+.timeline-item.active:hover {
+    background: #b8e0ff;
+}
+
+/* =================================
+   SCRAPBOOK
+================================= */
+
+.scrapbook {
+    width: min(900px, 100%);
+    margin-top: 25px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    align-items: center;
+}
+
+.polaroid {
+    background: #f7f5ee;
+    color: #203650;
+    padding: 10px 10px 28px;
+    border-radius: 3px;
+    box-shadow: 0 15px 35px #0005;
+    transform: rotate(var(--rotate));
+    transition: .35s;
+}
+
+.polaroid:hover {
+    transform: rotate(0deg) translateY(-10px) scale(1.04);
+    z-index: 2;
+}
+
+.polaroid img {
+    width: 100%;
+    height: 175px;
+    object-fit: cover;
+    display: block;
+    background: #b6d9f5;
+}
+
+.polaroid p {
+    font-family: 'Playfair Display', serif;
+    text-align: center;
+    padding-top: 13px;
+    font-size: 14px;
+}
+
+.note {
+    margin-top: 30px;
+    padding: 20px 25px;
+    max-width: 600px;
+    border: 1px solid #ffffff30;
+    background: #ffffff0c;
+    border-radius: 15px;
+    text-align: center;
+    line-height: 1.8;
+    color: #d5e9ff;
+    font-size: 14px;
+}
+
+/* =================================
+   LITTLE GARDEN
+================================= */
+
+.garden {
+    position: relative;
+    width: min(650px, 95vw);
+    height: 340px;
+    margin: 25px auto 10px;
+    border-radius: 45% 45% 20px 20px;
+    background: linear-gradient(#a5d9ff12, #7dc5ff0c);
+    border-bottom: 2px solid #9bd3ff55;
+    overflow: hidden;
+}
+
+.flower {
+    position: absolute;
+    border: 0;
+    background: none;
+    font-size: 45px;
+    cursor: pointer;
+    filter: drop-shadow(0 5px 10px #0004);
+    transition: .3s;
+    animation: sway 3s ease-in-out infinite alternate;
+}
+
+.flower:hover {
+    transform: scale(1.3) !important;
+}
+
+@keyframes sway {
+    to {
+        translate: 5px 0;
+        rotate: 8deg;
+    }
+}
+
+.flower:nth-child(1) {
+    left: 12%;
+    bottom: 65px;
+}
+
+.flower:nth-child(2) {
+    left: 34%;
+    bottom: 105px;
+    animation-delay: .4s;
+}
+
+.flower:nth-child(3) {
+    left: 55%;
+    bottom: 60px;
+    animation-delay: .8s;
+}
+
+.flower:nth-child(4) {
+    left: 77%;
+    bottom: 110px;
+    animation-delay: .2s;
+}
+
+.flower:nth-child(5) {
+    left: 44%;
+    bottom: 190px;
+    animation-delay: .6s;
+}
+
+.garden-ground {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 35px;
+    background: #5eae8d30;
+    border-radius: 50% 50% 0 0;
+}
+
+.flower-message {
+    min-height: 65px;
+    text-align: center;
+    color: #d8ebff;
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    padding: 15px;
+    max-width: 520px;
+}
+
+/* =================================
+   MUSIC PLAYER
+================================= */
+
+.music-card {
+    width: min(420px, 100%);
+    padding: 25px;
+    margin: 30px auto;
+    border: 1px solid #ffffff30;
+    border-radius: 25px;
+    background: linear-gradient(145deg, #ffffff19, #ffffff08);
+    backdrop-filter: blur(15px);
+    box-shadow: 0 20px 50px #0003;
+    text-align: center;
+}
+
+.album {
+    width: 180px;
+    height: 180px;
+    margin: 0 auto 20px;
+    border-radius: 20px;
+    display: grid;
+    place-items: center;
+    font-size: 65px;
+    background: linear-gradient(145deg, #8bcaff, #315d9a);
+    box-shadow: 0 12px 35px #0004;
+}
+
+.music-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 23px;
+}
+
+.music-card small {
+    color: #b9d7f4;
+    display: block;
+    margin-top: 6px;
+}
+
+audio {
+    width: 100%;
+    margin-top: 22px;
+    height: 35px;
+}
+
+/* =================================
+   MEMORY CARDS
+================================= */
+
+.memory-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    width: min(800px, 100%);
+    margin-top: 25px;
+}
+
+.memory {
+    min-height: 150px;
+    padding: 20px 14px;
+    border-radius: 18px;
+    background: #ffffff10;
+    border: 1px solid #ffffff28;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 10px;
+
+    transition: .3s;
+    cursor: pointer;
+}
+
+.memory:hover {
+    background: #ffffff20;
+    transform: translateY(-6px);
+}
+
+.memory .emoji {
+    font-size: 30px;
+}
+
+.memory p {
+    font-size: 12px;
+    color: #d6eaff;
+}
+
+/* =================================
+   MEMORY POPUP
+================================= */
+
+.memory-detail {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: #03132ddd;
+    z-index: 20;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.memory-detail.show {
+    display: flex;
+}
+
+.detail-box {
+    max-width: 430px;
+    width: 100%;
+    padding: 35px 25px;
+    border-radius: 22px;
+    background: linear-gradient(145deg, #214b79, #10294e);
+    border: 1px solid #ffffff40;
+    text-align: center;
+    animation: appear .4s ease;
+}
+
+.detail-box p {
+    line-height: 1.9;
+    color: #d8eaff;
+    margin: 20px 0;
+}
+
+/* =================================
+   FINAL PAGE
+================================= */
+
+.final-heart {
+    font-size: 65px;
+    animation: heartbeat 1.5s infinite;
+}
+
+@keyframes heartbeat {
+    50% {
+        transform: scale(1.2);
+    }
+}
+
+.footer {
+    font-size: 11px;
+    color: #9dc5ed;
+    margin-top: 35px;
+    letter-spacing: 2px;
+    text-align: center;
+}
+
+/* =================================
+   RESPONSIVE
+================================= */
+
+@media (max-width: 650px) {
+
+    .scrapbook {
+        grid-template-columns: repeat(2, 1fr);
+        max-width: 420px;
+    }
+
+    .polaroid img {
+        height: 140px;
+    }
+
+    .memory-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .garden {
+        height: 290px;
+    }
+
+    .flower {
+        font-size: 37px;
+    }
+
+    .page {
+        padding: 65px 18px 110px;
+    }
+}
+
+@media (max-width: 500px) {
+
+    .timeline-nav {
+        bottom: 12px;
+        width: calc(100% - 20px);
+        padding: 7px;
+        gap: 2px;
+    }
+
+    .timeline-item {
+        flex-direction: column;
+        gap: 3px;
+        padding: 9px 2px;
+    }
+
+    .timeline-icon {
+        font-size: 15px;
+    }
+
+    .timeline-label {
+        font-size: 9px;
+    }
+
+    .page {
+        padding-bottom: 100px;
+    }
+}
+
+@media (max-width: 360px) {
+
+    .timeline-label {
+        font-size: 8px;
+    }
+
+    .timeline-nav {
+        width: calc(100% - 12px);
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="stars"></div>
+<div class="glow g1"></div>
+<div class="glow g2"></div>
+
+<div class="page-count" id="counter">01 / 05</div>
+
+<main>
+
+<!-- PAGE 1: WELCOME -->
+
+<section class="page active" id="p1">
+
+    <div class="eyebrow">Sebuah Ruang Kecil Untuk Kamu</div>
+
+    <h1>For My Keishayangg<span style="color:#9ed5ff">♡</span></h1>
+
+    <p class="subtitle">
+        Untuk segala lelah yang mungkin tak sempat kamu ceritakan,
+        untuk mimpi yang sedang kamu perjuangkan, dan untuk dirimu
+        yang selalu punya alasan untuk dibanggakan.
+    </p>
+
+    <button class="btn" onclick="startWorld()">
+        Enter your little world ✨
+    </button>
+
+    <div class="footer">MADE WITH LOVE, JUST FOR YOU</div>
+
+</section>
+
+
+<!-- PAGE 2: SCRAPBOOK -->
+
+<section class="page" id="p2">
+
+    <div class="eyebrow">Chapter 01 · Little memories</div>
+
+    <h2>Our Little Scrapbook</h2>
+
+    <p class="subtitle">
+        Some moments may look simple, but they mean a lot to me.
+    </p>
+
+    <div class="scrapbook">
+
+        <div class="polaroid" style="--rotate:-5deg">
+            <img src="assets/foto1.jpg" alt="Memory 1">
+            <p>my favorite smile ♡</p>
+        </div>
+
+        <div class="polaroid" style="--rotate:4deg">
+            <img src="assets/foto2.jpg" alt="Memory 2">
+            <p>little happy moments</p>
+        </div>
+
+        <div class="polaroid" style="--rotate:-3deg">
+            <img src="assets/foto3.jpg" alt="Memory 3">
+            <p>you look lovely</p>
+        </div>
+
+        <div class="polaroid" style="--rotate:5deg">
+            <img src="assets/foto4.jpg" alt="Memory 4">
+            <p>my favorite person</p>
+        </div>
+
+    </div>
+
+    <div class="note">
+        "Ketika kita melihat kembali semua ini, semoga kita masih bisa
+        tersenyum mengingat betapa sederhananya cara kita menciptakan bahagia."
+    </div>
+
+</section>
+
+
+<!-- PAGE 3: GARDEN -->
+
+<section class="page" id="p3">
+
+    <div class="eyebrow">Chapter 02 · A garden for you</div>
+
+    <h2>Little Garden 🌷</h2>
+
+    <p class="subtitle">
+        Klik bunganya deh. Setiap bunga punya pesan kecil untukmu.
+    </p>
+
+    <div class="garden">
+
+        <button class="flower" onclick="flowerMessage(0)">🌷</button>
+        <button class="flower" onclick="flowerMessage(1)">🌻</button>
+        <button class="flower" onclick="flowerMessage(2)">🌸</button>
+        <button class="flower" onclick="flowerMessage(3)">🌼</button>
+        <button class="flower" onclick="flowerMessage(4)">💐</button>
+
+        <div class="garden-ground"></div>
+
+    </div>
+
+    <div class="flower-message" id="flowerText">
+        PILIH BUNGA INI ♡
+    </div>
+
+</section>
+
+
+<!-- PAGE 4: MUSIC AND MEMORY -->
+
+<section class="page" id="p4">
+
+    <div class="eyebrow">Chapter 03 · A song for you</div>
+
+    <h2>Press Play, My Love</h2>
+
+    <p class="subtitle">
+        Take a little break. Let this song accompany you for a while.
+    </p>
+
+    <div class="music-card">
+
+        <div class="album">🎧</div>
+
+        <h3>A song for Feyya</h3>
+
+        <small>just for your little moments ♡</small>
+
+        <audio id="music" controls loop>
+            <source src="assets/lagu.mp3" type="audio/mpeg">
+        </audio>
+
+    </div>
+
+    <div class="eyebrow" style="margin-top:25px">
+        Little reminders for you
+    </div>
+
+    <div class="memory-grid">
+
+        <div class="memory" onclick="openMemory(0)">
+            <span class="emoji">🦋</span>
+            <strong>When you're tired</strong>
+            <p>tap to open</p>
+        </div>
+
+        <div class="memory" onclick="openMemory(1)">
+            <span class="emoji">🌷</span>
+            <strong>When you doubt yourself</strong>
+            <p>tap to open</p>
+        </div>
+
+        <div class="memory" onclick="openMemory(2)">
+            <span class="emoji">☁️</span>
+            <strong>When things get hard</strong>
+            <p>tap to open</p>
+        </div>
+
+        <div class="memory" onclick="openMemory(3)">
+            <span class="emoji">💗</span>
+            <strong>When you feel alone</strong>
+            <p>tap to open</p>
+        </div>
+
+        <div class="memory" onclick="openMemory(4)">
+            <span class="emoji">✨</span>
+            <strong>When you need courage</strong>
+            <p>tap to open</p>
+        </div>
+
+        <div class="memory" onclick="openMemory(5)">
+            <span class="emoji">🧸</span>
+            <strong>A little reminder</strong>
+            <p>tap to open</p>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- PAGE 5: FINAL MESSAGE -->
+
+<section class="page" id="p5">
+
+    <div class="final-heart">💙</div>
+
+    <div class="eyebrow">One last thing</div>
+
+    <h2>You've got this, Feyya.</h2>
+
+    <p class="subtitle" style="max-width:580px">
+
+        Sayang, aku tahu perjalanan yang sedang kamu jalani tidak selalu mudah.
+        Akan ada hari-hari ketika kamu merasa lelah, bingung, kehilangan semangat,
+        atau bahkan merasa bahwa semua usahamu belum cukup.
+
+        <br><br>
+
+        Tapi, tolong jangan terlalu keras pada dirimu sendiri, ya.
+
+        <br><br>
+
+        Kamu tidak harus selalu kuat setiap waktu. Kamu boleh lelah, boleh menangis,
+        boleh beristirahat sejenak. Tidak apa-apa jika hari ini kamu belum bisa
+        melakukan semuanya. Pelan-pelan saja, tidak perlu membandingkan perjalananmu
+        dengan siapa pun.
+
+        <br><br>
+
+        Aku harap kamu tidak pernah meremehkan setiap langkah kecil yang sudah
+        kamu ambil. Mungkin bagimu itu hal biasa, tetapi aku tahu ada banyak usaha,
+        keberanian, dan hal-hal yang tidak mudah di baliknya. Dan untuk semua itu,
+        aku bangga sama kamu.
+
+        <br><br>
+
+        Kalau suatu hari semuanya terasa berat, jangan lupa bahwa kamu tidak harus
+        menghadapi semuanya dengan berpura-pura baik-baik saja. Kamu selalu boleh
+        bercerita, mengeluh, atau sekadar diam. Aku ingin menjadi seseorang yang
+        bisa kamu datangi tanpa harus memikirkan apakah kamu sedang dalam keadaan
+        baik atau tidak.
+
+        <br><br>
+
+        Teruslah bertumbuh, kejar apa yang kamu impikan, dan jangan pernah kehilangan
+        dirimu sendiri dalam prosesnya.
+
+        <br><br>
+
+        Aku percaya sama kamu, Feyya. Bukan hanya pada siapa kamu nantinya, tetapi
+        juga pada dirimu yang sekarang, dengan segala kekurangan, perjuangan,
+        dan hal-hal kecil yang membuatmu menjadi dirimu sendiri.
+
+        <br><br>
+
+        I love you, sayang. I will always be by your side. ♡
+
+    </p>
+
+    <button class="btn" onclick="celebrate()">
+        KLIK INI ♡
+    </button>
+
+    <div class="footer">
+        END OF THIS LITTLE WORLD · BUT NOT MY LOVE
+    </div>
+
+</section>
+
+</main>
+
+
+<!-- MINIMAL GLASS NAVIGATION -->
+
+<nav class="timeline-nav">
+
+    <button class="timeline-item" onclick="goToPage(1)">
+        <span class="timeline-icon">♡</span>
+        <span class="timeline-label">Start</span>
+    </button>
+
+    <button class="timeline-item" onclick="goToPage(2)">
+        <span class="timeline-icon">📷</span>
+        <span class="timeline-label">Scrapbook</span>
+    </button>
+
+    <button class="timeline-item" onclick="goToPage(3)">
+        <span class="timeline-icon">🌷</span>
+        <span class="timeline-label">Garden</span>
+    </button>
+
+    <button class="timeline-item" onclick="goToPage(4)">
+        <span class="timeline-icon">🎧</span>
+        <span class="timeline-label">Memories</span>
+    </button>
+
+    <button class="timeline-item" onclick="goToPage(5)">
+        <span class="timeline-icon">💙</span>
+        <span class="timeline-label">For You</span>
+    </button>
+
+</nav>
+
+
+<!-- MEMORY POPUP -->
+
+<div class="memory-detail" id="memoryDetail" onclick="closeMemory()">
+
+    <div class="detail-box" onclick="event.stopPropagation()">
+
+        <div style="font-size:38px">💌</div>
+
+        <h2 style="font-size:27px" id="memoryTitle">
+            For you
+        </h2>
+
+        <p id="memoryContent"></p>
+
+        <button class="btn" onclick="closeMemory()">
+            Close ♡
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+let current = 1;
+const total = 5;
+
+
+/* FLOWER MESSAGES */
+
+const flowerMessages = [
+
+    "Semoga kamu selalu ingat bahwa dirimu jauh lebih berharga daripada apa yang bisa kamu ukur. Bahkan ketika kamu merasa belum menjadi apa-apa, bagiku kamu tetap seseorang yang begitu istimewa. 🌷",
+
+    "Jangan terlalu sibuk mengejar segala hal sampai lupa membahagiakan dirimu sendiri. Kamu juga pantas mendapatkan istirahat, ketenangan, dan hal-hal baik yang selama ini kamu perjuangkan. 🌻",
+
+    "Tidak perlu terburu-buru menjadi seseorang yang hebat. Kamu punya waktumu sendiri, punya jalanmu sendiri. Nikmati setiap prosesnya, aku harap kamu tidak terlalu keras pada dirimu sendiri. 🌸",
+
+    "Aku mungkin tidak selalu tahu seberapa berat hari-hari yang kamu lalui, tapi aku ingin kamu tahu bahwa setiap usaha kecilmu tetap berarti. Aku bangga padamu, bahkan untuk hal-hal yang tidak pernah kamu ceritakan. 🌼",
+
+    "Semoga kehidupan mempertemukanmu dengan banyak hal baik, orang-orang yang tulus, dan kebahagiaan yang tidak perlu kamu perjuangkan sendirian. Semoga banyak alasan untuk tersenyum datang menghampirimu. 💐"
+
+];
+
+
+/* MEMORY CONTENT */
+
+const memories = [
+
+    {
+        title: "Saat Kamu Lelah 🦋",
+        text: "Sayang, istirahat dulu ya. Kamu nggak harus menyelesaikan semuanya sekaligus. Menjadi produktif bukan berarti kamu harus menghabiskan seluruh tenagamu. Kamu juga berhak punya waktu untuk beristirahat."
+    },
+
+    {
+        title: "Saat Kamu Meragukan Diri 🌷",
+        text: "Tolong jangan pernah meremehkan dirimu sendiri. Kamu sudah sampai sejauh ini, dan itu bukan sesuatu yang mudah. Aku percaya kamu punya kemampuan untuk melewati hal-hal yang sedang kamu hadapi."
+    },
+
+    {
+        title: "Saat Semuanya Terasa Sulit ☁️",
+        text: "Tidak apa-apa kalau hari ini nggak berjalan sesuai harapan. Satu hari yang buruk bukan berarti semuanya akan buruk. Besok selalu punya kesempatan baru untuk mencoba lagi."
+    },
+
+    {
+        title: "Saat Kamu Merasa Sendiri 💗",
+        text: "Meskipun aku tidak selalu berada di sampingmu secara langsung, aku harap kamu tidak pernah merasa harus menghadapi semuanya sendirian. Aku selalu ingin menjadi tempat kamu bercerita, tanpa takut dihakimi."
+    },
+
+    {
+        title: "Saat Kamu Butuh Keberanian ✨",
+        text: "Kamu jauh lebih mampu daripada yang kamu bayangkan. Jangan takut melakukan kesalahan saat belajar. Kamu sedang bertumbuh, dan setiap pengalaman punya sesuatu untuk diajarkan."
+    },
+
+    {
+        title: "Sedikit Pengingat 🧸",
+        text: "Kamu dicintai. Bukan karena apa yang berhasil kamu capai, bukan karena seberapa sempurna harimu, tetapi karena kamu adalah dirimu sendiri. Dan itu sudah lebih dari cukup."
+    }
+
+];
+
+
+/* PAGE NAVIGATION */
+
+function showPage() {
+
+    document.querySelectorAll('.page').forEach(page => {
+        page.classList.remove('active');
+    });
+
+    document.getElementById('p' + current).classList.add('active');
+
+    document.getElementById('counter').textContent =
+        String(current).padStart(2, '0') +
+        ' / ' +
+        String(total).padStart(2, '0');
+
+    updateTimeline();
+
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+
+}
+
+
+/* UPDATE NAVIGATION */
+
+function updateTimeline() {
+
+    const items = document.querySelectorAll('.timeline-item');
+
+    items.forEach((item, index) => {
+
+        item.classList.remove('active', 'completed');
+
+        if (index + 1 === current) {
+            item.classList.add('active');
+        }
+
+        else if (index + 1 < current) {
+            item.classList.add('completed');
+        }
+
+    });
+
+}
+
+
+/* GO TO PAGE */
+
+function goToPage(number) {
+
+    current = number;
+    showPage();
+
+}
+
+
+/* START WEBSITE */
+
+function startWorld() {
+
+    const music = document.getElementById('music');
+
+    music.play().catch(() => {});
+
+    current = 2;
+    showPage();
+
+}
+
+
+/* GARDEN */
+
+function flowerMessage(index) {
+
+    document.getElementById('flowerText').textContent =
+        flowerMessages[index];
+
+}
+
+
+/* MEMORY CARDS */
+
+function openMemory(index) {
+
+    document.getElementById('memoryTitle').textContent =
+        memories[index].title;
+
+    document.getElementById('memoryContent').textContent =
+        memories[index].text;
+
+    document.getElementById('memoryDetail').classList.add('show');
+
+}
+
+
+function closeMemory() {
+
+    document.getElementById('memoryDetail').classList.remove('show');
+
+}
+
+
+/* FINAL ANIMATION */
+
+function celebrate() {
+
+    for (let i = 0; i < 25; i++) {
+
+        const heart = document.createElement('div');
+
+        heart.textContent = ['💙', '♡', '✨', '💗'][
+            Math.floor(Math.random() * 4)
+        ];
+
+        heart.style.cssText = `
+            position: fixed;
+            left: ${Math.random() * 100}%;
+            top: 100%;
+            font-size: ${18 + Math.random() * 25}px;
+            z-index: 30;
+            pointer-events: none;
+            animation: floatUp ${2 + Math.random() * 2}s ease-out forwards;
+        `;
+
+        document.body.appendChild(heart);
+
+        setTimeout(() => heart.remove(), 4500);
+
+    }
+
+}
+
+
+/* FLOATING HEARTS */
+
+const style = document.createElement('style');
+
+style.textContent = `
+@keyframes floatUp {
+    to {
+        transform: translateY(-110vh) rotate(360deg);
+        opacity: 0;
+    }
+}`;
+
+document.head.appendChild(style);
+
+
+/* BACKGROUND STARS */
+
+for (let i = 0; i < 85; i++) {
+
+    const star = document.createElement('span');
+
+    star.className = 'star';
+    star.style.left = Math.random() * 100 + '%';
+    star.style.top = Math.random() * 100 + '%';
+    star.style.animationDelay = Math.random() * 3 + 's';
+
+    document.getElementById('stars').appendChild(star);
+
+}
+
+
+/* INITIALIZE */
+
+showPage();
+
+</script>
+
+</body>
+</html>
